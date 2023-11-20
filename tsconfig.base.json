@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@nx-next-nest-prisma-ory-template/config": [
+        "packages/config/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
