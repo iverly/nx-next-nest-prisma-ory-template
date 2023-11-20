@@ -17,7 +17,10 @@
     "paths": {
       "@nx-next-nest-prisma-ory-template/config": [
         "packages/config/src/index.ts"
-      ]
+      ],
+      "@nx-next-nest-prisma-ory-template/database": [
+        "packages/database/src/index.ts"
+      ],
     }
   },
   "exclude": ["node_modules", "tmp"]

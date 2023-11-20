@@ -1,0 +1,47 @@
+////////////////////////////////////////////////
+//            Source & generators             //
+////////////////////////////////////////////////
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator dto_with_validation {
+  provider                        = "prisma-generator-nestjs-dto"
+  output                          = "../packages/types/src/lib/generated/classes"
+  outputToNestJsResourceStructure = "true"
+  reExport                        = "true"
+  classValidation                 = "true"
+  prettier                        = "true"
+}
+
+generator dto {
+  provider                        = "prisma-generator-nestjs-dto"
+  output                          = "../packages/types/src/lib/generated/interfaces"
+  outputToNestJsResourceStructure = "true"
+  reExport                        = "true"
+  exportRelationModifierClasses   = "false"
+  createDtoPrefix                 = "ICreate"
+  updateDtoPrefix                 = "IUpdate"
+  connectDtoPrefix                = "IConnect"
+  dtoSuffix                       = "Attributes"
+  entityPrefix                    = "I"
+  classValidation                 = "false"
+  noDependencies                  = "true"
+  outputType                      = "interface"
+  prettier                        = "true"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+////////////////////////////////////////////////
+//            Model definitions               //
+////////////////////////////////////////////////
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+}
