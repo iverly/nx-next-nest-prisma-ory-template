@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  # web gateway
+  traefik:
+    image: traefik:v2.9
+    container_name: dev-traefik
+    restart: unless-stopped
+    command:
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      # Web entry (:80)
+      - --entrypoints.web.address=:80
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  # database
+  postgres:
+    container_name: dev-postgres
+    environment:
+      - POSTGRESQL_PASSWORD=postgres
+    volumes:
+      - postgres_dev_data:/bitnami/postgresql
+      - ./scripts/postgres/00-init.sql:/docker-entrypoint-initdb.d/00-init.sql
+
+  # api-proxy (other services can access the api)
+  api:
+    image: alpine/socat
+    container_name: dev-api-proxy
+    restart: unless-stopped
+    command: tcp-listen:3000,fork tcp:host.docker.internal:3000
+
+volumes:
+  postgres_dev_data:

@@ -2,6 +2,11 @@
   "name": "@nx-next-nest-prisma-ory-template/source",
   "version": "0.0.0",
   "scripts": {
+    "build": "nx run-many --target=build --all=true",
+    "dev:api": "nx run api:serve:development --watch=true",
+    "dev:docker": "docker compose -f docker-compose.base.yaml -f docker-compose.dev.yaml",
+    "dev:docker:up": "pnpm dev:docker up -d",
+    "dev:docker:down": "pnpm dev:docker down",
     "prisma:generate": "rimraf packages/types/src/lib/generated && prisma generate",
     "migrate:deploy": "prisma migrate deploy",
     "migrate:dev": "prisma migrate dev",
