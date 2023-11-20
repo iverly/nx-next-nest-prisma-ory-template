@@ -19,6 +19,19 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
+  # policy decision point
+  oathkeeper:
+    container_name: dev-oathkeeper
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.services.dev-oathkeeper.loadbalancer.server.port=4455'
+      - 'traefik.http.routers.dev-oathkeeper.rule=HostRegexp(`nx-next-nest-prisma-ory-template.127.0.0.1.sslip.io`, `{subdomain:[a-z-_.]+}.nx-next-nest-prisma-ory-template.127.0.0.1.sslip.io`)'
+      - 'traefik.http.routers.dev-oathkeeper.entrypoints=web'
+    environment:
+      - LOG_LEVEL=debug
+    volumes:
+      - ./config/oathkeeper/rules/dev.yaml:/etc/config/oathkeeper/rules/dev.yaml
+
   # user federation
   kratos:
     container_name: dev-kratos

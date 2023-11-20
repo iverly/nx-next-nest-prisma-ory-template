@@ -1,0 +1,17 @@
+#######################################
+#         Auth Access Rules           #
+#######################################
+- id: "ory:kratos-selfservice-ui-node:anonymous"
+  upstream:
+    preserve_host: true
+    url: "http://kratos-selfservice-ui-node:3000"
+  match:
+    url: http://auth.nx-next-nest-prisma-ory-template.<127\.0\.0\.1\.sslip\.io|com>/<.*>
+    methods:
+      - GET
+  authenticators:
+    - handler: anonymous
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: noop

@@ -8,6 +8,19 @@ services:
     ports:
       - 5432:5432
 
+  # policy decision point
+  oathkeeper:
+    image: oryd/oathkeeper:v0.40
+    command: serve proxy -c "/etc/config/oathkeeper/oathkeeper.yaml"
+    restart: unless-stopped
+    volumes:
+      - ./config/oathkeeper/oathkeeper.yaml:/etc/config/oathkeeper/oathkeeper.yaml
+      - ./config/oathkeeper/id_token.jwks.json:/etc/config/oathkeeper/id_token.jwks.json
+      - ./config/oathkeeper/rules/auth.yaml:/etc/config/oathkeeper/rules/auth.yaml
+      - ./config/oathkeeper/rules/kratos.yaml:/etc/config/oathkeeper/rules/kratos.yaml
+    depends_on:
+      - kratos
+
   # user federation
   kratos:
     image: oryd/kratos:v1.0.0

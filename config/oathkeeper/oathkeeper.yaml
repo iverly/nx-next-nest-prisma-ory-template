@@ -1,0 +1,92 @@
+version: v0.40.1
+
+log:
+  level: debug
+  format: json
+
+serve:
+  proxy:
+    cors:
+      enabled: true
+      allowed_origins:
+        - "*"
+      allowed_methods:
+        - POST
+        - GET
+        - PUT
+        - PATCH
+        - DELETE
+      allowed_headers:
+        - Authorization
+        - Content-Type
+      exposed_headers:
+        - Content-Type
+      allow_credentials: true
+      debug: true
+
+errors:
+  fallback:
+    - json
+
+  handlers:
+    redirect:
+      enabled: true
+      config:
+        to: http://auth.nx-next-nest-prisma-ory-template.127.0.0.1.sslip.io/login
+        when:
+          - error:
+              - unauthorized
+              - forbidden
+            request:
+              header:
+                accept:
+                  - text/html
+    json:
+      enabled: true
+      config:
+        verbose: true
+
+access_rules:
+  matching_strategy: regexp
+  repositories:
+    - file:///etc/config/oathkeeper/rules/auth.yaml
+    - file:///etc/config/oathkeeper/rules/kratos.yaml
+    - file:///etc/config/oathkeeper/rules/api.yaml
+    - file:///etc/config/oathkeeper/rules/dashboard.yaml
+    - file:///etc/config/oathkeeper/rules/dev.yaml
+
+authenticators:
+  anonymous:
+    enabled: true
+    config:
+      subject: guest
+
+  cookie_session:
+    enabled: true
+    config:
+      check_session_url: http://kratos:4433/sessions/whoami
+      preserve_path: true
+      extra_from: "@this"
+      subject_from: "identity.id"
+      only:
+        - ory_kratos_session
+
+  noop:
+    enabled: true
+
+authorizers:
+  allow:
+    enabled: true
+
+mutators:
+  noop:
+    enabled: true
+  id_token:
+    enabled: true
+    config:
+      issuer_url: http://oathkeeper.nx-next-nest-prisma-ory-template.internal
+      jwks_url: file:///etc/config/oathkeeper/id_token.jwks.json
+      claims: |
+        {
+          "session": {{ .Extra | toJson }}
+        }
