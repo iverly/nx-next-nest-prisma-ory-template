@@ -30,3 +30,10 @@ services:
   kratos-selfservice-ui-node:
     image: oryd/kratos-selfservice-ui-node:v1.0.0
     restart: unless-stopped
+
+  # mailing
+  mailslurper:
+    image: oryd/mailslurper:latest-smtps
+    restart: unless-stopped
+    ports:
+      - 4437:4437 # api port cannot be changed :(
