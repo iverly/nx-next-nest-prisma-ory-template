@@ -7,3 +7,26 @@ services:
     restart: unless-stopped
     ports:
       - 5432:5432
+
+  # user federation
+  kratos:
+    image: oryd/kratos:v1.0.0
+    command: serve -c /etc/config/kratos/kratos.yml --dev --watch-courier
+    restart: unless-stopped
+    volumes:
+      - ./config/kratos:/etc/config/kratos
+    depends_on:
+      - kratos-migrations
+
+  # user federation migrations
+  kratos-migrations:
+    image: oryd/kratos:v1.0.0
+    command: -c /etc/config/kratos/kratos.yml migrate sql -e --yes
+    restart: on-failure
+    volumes:
+      - ./config/kratos:/etc/config/kratos
+
+  # user federation self service ui (while auth ui is not ready)
+  kratos-selfservice-ui-node:
+    image: oryd/kratos-selfservice-ui-node:v1.0.0
+    restart: unless-stopped

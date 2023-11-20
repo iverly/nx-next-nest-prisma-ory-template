@@ -19,6 +19,28 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
+  # user federation
+  kratos:
+    container_name: dev-kratos
+    environment:
+      - DSN=postgres://postgres:postgres@postgres:5432/auth?sslmode=disable&max_conns=20&max_idle_conns=4
+      - LOG_LEVEL=trace
+
+  # user federation migrations
+  kratos-migrations:
+    container_name: dev-kratos-migrations
+    environment:
+      - DSN=postgres://postgres:postgres@postgres:5432/auth?sslmode=disable&max_conns=20&max_idle_conns=4
+
+  # user federation self service ui (while auth ui is not ready)
+  kratos-selfservice-ui-node:
+    image: oryd/kratos-selfservice-ui-node:v1.0.0
+    restart: unless-stopped
+    container_name: dev-kratos-selfservice-ui-node
+    environment:
+      - KRATOS_PUBLIC_URL=http://kratos:4433/
+      - KRATOS_BROWSER_URL=http://identity.nx-next-nest-prisma-ory-template.127.0.0.1.sslip.io/kratos/
+
   # database
   postgres:
     container_name: dev-postgres
