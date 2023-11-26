@@ -9,6 +9,7 @@ import {
   ExceptionsFilter,
   PrismaClientExceptionFilter,
 } from '@nx-next-nest-prisma-ory-template/error';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -37,6 +38,14 @@ async function bootstrap() {
   );
 
   app.enableShutdownHooks();
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('nx-next-nest-prisma-ory-template API')
+    .setDescription('Your NX template to provide a Seamless Experience.')
+    .setVersion('0.1')
+    .build();
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('swagger', app, document);
 
   const port = process.env.PORT || 3000;
   await app.listen(port, '0.0.0.0');
