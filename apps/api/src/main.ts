@@ -1,4 +1,4 @@
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -11,12 +11,28 @@ import {
 } from '@nx-next-nest-prisma-ory-template/error';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ResponseFormatterInterceptor } from '@nx-next-nest-prisma-ory-template/utils';
+import {
+  otelEnabled,
+  otelSDK,
+} from '@nx-next-nest-prisma-ory-template/opentelemetry';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
+  if (otelEnabled) {
+    await otelSDK.start();
+  }
+
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter()
+    new FastifyAdapter(),
+    {
+      bufferLogs: true,
+    }
   );
+
+  if (otelEnabled) {
+    app.useLogger(app.get(Logger));
+  }
 
   const httpAdapter = app.getHttpAdapter();
 
@@ -53,7 +69,6 @@ async function bootstrap() {
 
   const port = process.env.PORT || 3000;
   await app.listen(port, '0.0.0.0');
-  Logger.log(`🚀 Application is running on port: ${port}`);
 }
 
 bootstrap();
