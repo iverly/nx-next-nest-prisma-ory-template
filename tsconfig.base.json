@@ -25,7 +25,10 @@
       "@nx-next-nest-prisma-ory-template/error": [
         "packages/error/src/index.ts"
       ],
-      "@nx-next-nest-prisma-ory-template/types": ["packages/types/src/index.ts"]
+      "@nx-next-nest-prisma-ory-template/types": [
+        "packages/types/src/index.ts"
+      ],
+      "@nx-next-nest-prisma-ory-template/utils": ["packages/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -10,6 +10,7 @@ import {
   PrismaClientExceptionFilter,
 } from '@nx-next-nest-prisma-ory-template/error';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ResponseFormatterInterceptor } from '@nx-next-nest-prisma-ory-template/utils';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -36,6 +37,9 @@ async function bootstrap() {
     new ExceptionsFilter(httpAdapter),
     new PrismaClientExceptionFilter(httpAdapter)
   );
+
+  // Response formatter interceptor
+  app.useGlobalInterceptors(new ResponseFormatterInterceptor());
 
   app.enableShutdownHooks();
 
