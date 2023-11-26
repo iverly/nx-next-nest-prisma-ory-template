@@ -44,6 +44,38 @@ services:
     image: oryd/kratos-selfservice-ui-node:v1.0.0
     restart: unless-stopped
 
+  # acl and rbac management
+  keto:
+    image: oryd/keto:v0.11.1
+    command: serve -c /etc/config/keto/keto.yaml
+    restart: unless-stopped
+    volumes:
+      - ./config/keto/keto.yaml:/etc/config/keto/keto.yaml
+      - ./config/keto/namespaces:/etc/config/keto/namespaces
+    depends_on:
+      - keto-migrations
+
+  # acl and rbac management migrations
+  keto-migrations:
+    image: oryd/keto:v0.11.1
+    command: -c /etc/config/keto/keto.yaml migrate up -y
+    restart: on-failure
+    volumes:
+      - ./config/keto/keto.yaml:/etc/config/keto/keto.yaml
+
+  # acl and rbac management initialization
+  keto-init:
+    image: oryd/keto:v0.11.1
+    entrypoint: ['sh', '/init.sh']
+    restart: on-failure
+    environment:
+      - KETO_WRITE_REMOTE=keto:4467
+    volumes:
+      - ./config/keto:/etc/config/keto
+      - ./scripts/keto/init.sh:/init.sh
+    depends_on:
+      - keto
+
   # mailing
   mailslurper:
     image: oryd/mailslurper:latest-smtps

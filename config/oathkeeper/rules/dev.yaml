@@ -34,3 +34,43 @@
     handler: allow
   mutators:
     - handler: noop
+
+- id: "dev:keto-read:anonymous"
+  upstream:
+    preserve_host: true
+    url: "http://keto:4466"
+    strip_path: /read
+  match:
+    url: "http://keto.dev.nx-next-nest-prisma-ory-template.127.0.0.1.sslip.io/read/<.*>"
+    methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - PATCH
+  authenticators:
+    - handler: anonymous
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: noop
+
+- id: "dev:keto-write:anonymous"
+  upstream:
+    preserve_host: true
+    url: "http://keto:4467"
+    strip_path: /write
+  match:
+    url: "http://keto.dev.nx-next-nest-prisma-ory-template.127.0.0.1.sslip.io/write/<.*>"
+    methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - PATCH
+  authenticators:
+    - handler: anonymous
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: noop

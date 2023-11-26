@@ -54,6 +54,24 @@ services:
       - KRATOS_PUBLIC_URL=http://kratos:4433/
       - KRATOS_BROWSER_URL=http://identity.nx-next-nest-prisma-ory-template.127.0.0.1.sslip.io/kratos/
 
+  # acl and rbac management
+  keto:
+    container_name: dev-keto
+    environment:
+      - DSN=postgres://postgres:postgres@postgres:5432/acl?sslmode=disable&max_conns=20&max_idle_conns=4
+
+  # acl and rbac management migrations
+  keto-migrations:
+    container_name: dev-keto-migrations
+    environment:
+      - DSN=postgres://postgres:postgres@postgres:5432/acl?sslmode=disable&max_conns=20&max_idle_conns=4
+
+  # acl and rbac management initialization
+  keto-init:
+    container_name: dev-keto-init
+    volumes:
+      - keto_init_dev_data:/tmp
+
   # database
   postgres:
     container_name: dev-postgres
@@ -72,3 +90,4 @@ services:
 
 volumes:
   postgres_dev_data:
+  keto_init_dev_data:
