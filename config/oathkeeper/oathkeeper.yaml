@@ -85,6 +85,12 @@ authorizers:
   allow:
     enabled: true
 
+  remote_json:
+    enabled: true
+    config:
+      remote: http://keto:4466/relation-tuples/check
+      payload: "{}"
+
 mutators:
   noop:
     enabled: true
