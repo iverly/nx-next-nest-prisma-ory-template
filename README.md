@@ -52,7 +52,7 @@ This repository contains a template for a full-stack application utilizing a pow
 6. **Run Migrations**
 
    ```bash
-   pnpm migrate:dev
+   pnpm migrate:deploy
    ```
 
 ### Running the Application
