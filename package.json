@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "build": "nx run-many --target=build --all=true",
+    "build:api": "nx run api:build",
+    "build:www": "nx run www:build",
+    "build:docker:api": "docker build -f apps/api/Dockerfile .",
     "dev:api": "nx run api:serve:development --watch=true",
     "dev:www": "nx run www:serve:development --watch=true",
     "dev:docker": "docker compose -f docker-compose.base.yaml -f docker-compose.dev.yaml",
@@ -12,7 +15,8 @@
     "migrate:deploy": "prisma migrate deploy",
     "migrate:dev": "prisma migrate dev",
     "migrate:reset": "rimraf packages/types/src/lib/generated && prisma migrate reset --force",
-    "db:push": "prisma db push"
+    "db:push": "prisma db push",
+    "postinstall": "pnpm prisma:generate"
   },
   "dependencies": {
     "@fastify/static": "^6.12.0",
