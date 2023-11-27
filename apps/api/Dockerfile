@@ -66,7 +66,7 @@ COPY --from=build /usr/src/app/node_modules/.pnpm/@prisma+client@5.6.0_prisma@5.
 COPY --from=build /usr/src/app/dist ./dist
 
 # Expose the port that the application listens on.
-EXPOSE 3000
+EXPOSE 3100
 
 # Run the application.
 CMD ["node", "dist/apps/api/main.js"]

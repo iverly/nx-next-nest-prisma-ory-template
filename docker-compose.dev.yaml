@@ -95,7 +95,7 @@ services:
     image: alpine/socat
     container_name: dev-api-proxy
     restart: unless-stopped
-    command: tcp-listen:3000,fork tcp:host.docker.internal:3000
+    command: tcp-listen:3100,fork tcp:host.docker.internal:3100
 
 volumes:
   postgres_dev_data:
