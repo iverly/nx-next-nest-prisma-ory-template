@@ -4,6 +4,7 @@
   "scripts": {
     "build": "nx run-many --target=build --all=true",
     "dev:api": "nx run api:serve:development --watch=true",
+    "dev:www": "nx run www:serve:development --watch=true",
     "dev:docker": "docker compose -f docker-compose.base.yaml -f docker-compose.dev.yaml",
     "dev:docker:up": "pnpm dev:docker up -d",
     "dev:docker:down": "pnpm dev:docker down",
