@@ -76,6 +76,11 @@ services:
     depends_on:
       - keto
 
+  # tracing
+  jaeger:
+    image: jaegertracing/all-in-one:1.19.2
+    restart: unless-stopped
+
   # mailing
   mailslurper:
     image: oryd/mailslurper:latest-smtps

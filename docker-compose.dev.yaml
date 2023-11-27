@@ -12,6 +12,11 @@ services:
       - --providers.docker.exposedbydefault=false
       # Web entry (:80)
       - --entrypoints.web.address=:80
+      # Tracing
+      - --tracing.jaeger=true
+      - --tracing.serviceName=traefik:gateway
+      - --tracing.jaeger.samplingServerURL=http://jaeger:5778/sampling
+      - --tracing.jaeger.collector.endpoint=http://jaeger:14268/api/traces?format=jaeger.thrift
     ports:
       - 80:80
       - 443:443
@@ -80,6 +85,10 @@ services:
     volumes:
       - postgres_dev_data:/bitnami/postgresql
       - ./scripts/postgres/00-init.sql:/docker-entrypoint-initdb.d/00-init.sql
+
+  # tracing
+  jaeger:
+    container_name: dev-jaeger
 
   # api-proxy (other services can access the api)
   api:
