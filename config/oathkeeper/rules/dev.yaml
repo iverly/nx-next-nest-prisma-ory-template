@@ -148,7 +148,7 @@
 - id: "dev:api-swagger:anonymous"
   upstream:
     preserve_host: true
-    url: "http://api:3000"
+    url: "http://api:3100"
   match:
     url: "http://api.nx-next-nest-prisma-ory-template.127.0.0.1.sslip.io/swagger/<.*>"
     methods:
