@@ -41,8 +41,26 @@ datasource db {
 ////////////////////////////////////////////////
 //            Model definitions               //
 ////////////////////////////////////////////////
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model Note {
+  /// @DtoReadOnly
+  /// @description The note id
+  /// @example b1774d2f-05f7-4ea4-b427-0d808bdca583
+  id        String   @id @default(uuid())
+  /// @description The note title
+  /// @example My note
+  /// @minLength 3
+  /// @maxLength 40
+  /// @Length(3, 40)
+  title     String
+  /// @description The note body
+  /// @example This is my note
+  /// @minLength 3
+  /// @maxLength 200
+  /// @Length(3, 200)
+  body      String
+  /// @DtoReadOnly
+  /// @description When the project was created
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("notes")
 }
