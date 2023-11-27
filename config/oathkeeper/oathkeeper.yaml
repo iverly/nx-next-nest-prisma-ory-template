@@ -51,8 +51,6 @@ access_rules:
   repositories:
     - file:///etc/config/oathkeeper/rules/auth.yaml
     - file:///etc/config/oathkeeper/rules/kratos.yaml
-    - file:///etc/config/oathkeeper/rules/api.yaml
-    - file:///etc/config/oathkeeper/rules/dashboard.yaml
     - file:///etc/config/oathkeeper/rules/dev.yaml
 
 authenticators:
