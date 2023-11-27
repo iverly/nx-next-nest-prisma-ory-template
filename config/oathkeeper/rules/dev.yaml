@@ -113,6 +113,38 @@
   mutators:
     - handler: noop
 
+- id: "dev:http-dump:anonymous"
+  upstream:
+    preserve_host: true
+    url: "http://http-dump:3000"
+  match:
+    url: "http://http-dump.dev.nx-next-nest-prisma-ory-template.127.0.0.1.sslip.io/anonymous"
+    methods:
+      - GET
+  authenticators:
+    - handler: anonymous
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: noop
+
+- id: "dev:http-dump:protected"
+  upstream:
+    preserve_host: true
+    url: "http://http-dump:3000"
+  match:
+    url: "http://http-dump.dev.nx-next-nest-prisma-ory-template.127.0.0.1.sslip.io/protected"
+    methods:
+      - GET
+  authenticators:
+    - handler: cookie_session
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: id_token
+  errors:
+    - handler: redirect
+
 - id: "dev:api-swagger:anonymous"
   upstream:
     preserve_host: true

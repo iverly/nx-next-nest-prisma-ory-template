@@ -77,6 +77,12 @@ services:
     volumes:
       - keto_init_dev_data:/tmp
 
+  # http dump
+  http-dump:
+    image: nomadscafe.sakuracr.jp/http-dump-request
+    container_name: dev-http-dump
+    restart: unless-stopped
+
   # database
   postgres:
     container_name: dev-postgres
