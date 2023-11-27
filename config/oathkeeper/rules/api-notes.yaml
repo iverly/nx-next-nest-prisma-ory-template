@@ -1,0 +1,63 @@
+#######################################
+#         Notes Access Rules          #
+#######################################
+- id: "api:create-note:protected"
+  upstream:
+    preserve_host: true
+    url: "http://api:3100"
+  match:
+    url: http://api.nx-next-nest-prisma-ory-template.<127\.0\.0\.1\.sslip\.io|com>/notes
+    methods:
+      - POST
+  authenticators:
+    - handler: cookie_session
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: id_token
+  errors:
+    - handler: redirect
+
+- id: "api:note:protected"
+  upstream:
+    preserve_host: true
+    url: "http://api:3100"
+  match:
+    url: http://api.nx-next-nest-prisma-ory-template.<127\.0\.0\.1\.sslip\.io|com>/notes/<([0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})>
+    methods:
+      - GET
+      - PATCH
+      - DELETE
+  authenticators:
+    - handler: cookie_session
+  authorizer:
+    handler: remote_json
+    config:
+      payload: |
+        {
+          "namespace": "notes",
+          "object": "{{ printIndex .MatchContext.RegexpCaptureGroups 1 }}",
+          "relation": "owner",
+          "subject_id": "{{ print .Subject }}"
+        }
+  mutators:
+    - handler: id_token
+  errors:
+    - handler: redirect
+
+- id: "api:list-note:protected"
+  upstream:
+    preserve_host: true
+    url: "http://api:3100"
+  match:
+    url: http://api.nx-next-nest-prisma-ory-template.<127\.0\.0\.1\.sslip\.io|com>/notes
+    methods:
+      - GET
+  authenticators:
+    - handler: cookie_session
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: id_token
+  errors:
+    - handler: redirect

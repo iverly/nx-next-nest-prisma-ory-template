@@ -61,6 +61,7 @@ access_rules:
     - file:///etc/config/oathkeeper/rules/auth.yaml
     - file:///etc/config/oathkeeper/rules/kratos.yaml
     - file:///etc/config/oathkeeper/rules/dev.yaml
+    - file:///etc/config/oathkeeper/rules/api-notes.yaml
 
 authenticators:
   anonymous:
