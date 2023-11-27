@@ -72,6 +72,15 @@ log:
   format: text
   leak_sensitive_values: true
 
+tracing:
+  provider: jaeger
+  service_name: ory:kratos
+  providers:
+    jaeger:
+      local_agent_address: jaeger:6831
+      sampling:
+        server_url: http://jaeger:5778/sampling
+
 secrets:
   cookie:
     - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE

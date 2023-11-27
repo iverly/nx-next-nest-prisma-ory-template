@@ -3,6 +3,15 @@ version: v0.11.1
 log:
   level: trace
 
+tracing:
+  provider: jaeger
+  service_name: ory:keto
+  providers:
+    jaeger:
+      local_agent_address: jaeger:6831
+      sampling:
+        server_url: http://jaeger:5778/sampling
+
 namespaces: file:///etc/config/keto/namespaces
 
 serve:

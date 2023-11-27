@@ -4,6 +4,15 @@ log:
   level: debug
   format: json
 
+tracing:
+  provider: jaeger
+  service_name: ory:oathkeeper
+  providers:
+    jaeger:
+      local_agent_address: jaeger:6831
+      sampling:
+        server_url: http://jaeger:5778/sampling
+
 serve:
   proxy:
     cors:
