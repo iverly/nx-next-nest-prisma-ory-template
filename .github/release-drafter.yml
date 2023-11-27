@@ -1,0 +1,85 @@
+name-template: "v$RESOLVED_VERSION"
+tag-template: "v$RESOLVED_VERSION"
+template: |
+  # What's Changed
+
+  $CHANGES
+
+version-resolver:
+  major:
+    labels:
+      - "version: major"
+  minor:
+    labels:
+      - "version: minor"
+  patch:
+    labels:
+      - "version: patch"
+  default: minor
+
+categories:
+  - title: "Breaking"
+    label: "type: breaking"
+  - title: "New"
+    label: "type: feature"
+  - title: "Bug Fixes"
+    label: "type: bug"
+  - title: "Documentation"
+    label: "type: docs"
+  - title: "Other changes"
+  - title: "Maintenance"
+    label: "type: maintenance"
+    collapse-after: 5
+
+autolabeler:
+  - label: "type: maintenance"
+    title:
+      - "/^chore:.*/"
+      - "/^ci:.*/"
+      - "/^refactor:.*/"
+  - label: "type: docs"
+    title:
+      - "/^docs:.*/"
+  - label: "type: bug"
+    title:
+      - "/^fix:.*/"
+  - label: "version: patch"
+    title:
+      - "/^fix:.*/"
+      - "/^chore:.*/"
+      - "/^ci:.*/"
+      - "/^docs:.*/"
+      - "/^refactor:.*/"
+  - label: "type: feature"
+    title:
+      - "/^feat:.*/"
+  - label: "version: minor"
+    title:
+      - "/^feat:.*/"
+  - label: "type: skip"
+    title:
+      - "/^skip:.*/"
+  - label: "version: major"
+    title:
+      - "/^breaking:.*/"
+
+replacers:
+  - search: "/feat:/g"
+    replace: ""
+  - search: "/fix:/g"
+    replace: ""
+  - search: "/skip:/g"
+    replace: ""
+  - search: "/breaking:/g"
+    replace: ""
+  - search: "/chore:/g"
+    replace: ""
+  - search: "/ci:/g"
+    replace: ""
+  - search: "/docs:/g"
+    replace: ""
+  - search: "/refactor:/g"
+    replace: ""
+
+exclude-labels:
+  - "type: skip"
