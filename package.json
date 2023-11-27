@@ -6,6 +6,7 @@
     "build:api": "nx run api:build",
     "build:www": "nx run www:build",
     "build:docker:api": "docker build -f apps/api/Dockerfile .",
+    "build:docker:www": "docker build -f apps/www/Dockerfile .",
     "dev:api": "nx run api:serve:development --watch=true",
     "dev:www": "nx run www:serve:development --watch=true",
     "dev:docker": "docker compose -f docker-compose.base.yaml -f docker-compose.dev.yaml",
@@ -60,6 +61,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^5.0.5",
     "rxjs": "^7.8.1",
+    "sharp": "^0.32.6",
     "tslib": "^2.6.2"
   },
   "devDependencies": {
