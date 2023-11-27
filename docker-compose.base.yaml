@@ -61,7 +61,7 @@ services:
     command: -c /etc/config/keto/keto.yaml migrate up -y
     restart: on-failure
     volumes:
-      - ./config/keto/keto.yaml:/etc/config/keto/keto.yaml
+      - ./config/keto:/etc/config/keto
 
   # acl and rbac management initialization
   keto-init:
