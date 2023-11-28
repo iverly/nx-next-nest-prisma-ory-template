@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 import { config } from './opentelemetry.config';
 import { OpenTelemetryModule as NestOpenTelemetryModule } from 'nestjs-otel';
+import { trace, context } from '@opentelemetry/api';
 
 @Module({})
 export class OpenTelemetryModule {
@@ -22,6 +23,15 @@ export class OpenTelemetryModule {
             base: null,
             formatters: {
               level: (label: string) => ({ level: label }),
+              log(object) {
+                const span = trace.getSpan(context.active());
+                if (!span) {
+                  return { ...object };
+                }
+
+                const { spanId, traceId } = span.spanContext();
+                return { ...object, spanId, traceId };
+              },
             },
             timestamp: () => `,"time":"${new Date().toISOString()}"`,
             redact: {
