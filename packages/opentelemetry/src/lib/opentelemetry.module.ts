@@ -19,6 +19,11 @@ export class OpenTelemetryModule {
         ConfigModule.forFeature(config),
         LoggerModule.forRoot({
           pinoHttp: {
+            base: null,
+            formatters: {
+              level: (label: string) => ({ level: label }),
+            },
+            timestamp: () => `,"time":"${new Date().toISOString()}"`,
             redact: {
               paths: ['req.headers.authorization', 'req.headers.cookie'],
             },
