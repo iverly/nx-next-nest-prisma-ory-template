@@ -1,12 +1,9 @@
-name: release
+name: Release
 
 on:
   push:
     tags:
       - 'v*'
-
-env:
-  CARGO_TERM_COLOR: always
 
 permissions:
   contents: write
@@ -18,6 +15,9 @@ jobs:
       fail-fast: false
       matrix:
         app: ['api', 'www']
+    concurrency:
+      group: 'docker-${{ matrix.app }}'
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -56,6 +56,7 @@ jobs:
           context: .
           file: ./apps/${{ matrix.app }}/Dockerfile
           platforms: linux/amd64, linux/arm64, linux/arm/v7
+
   create-github-release:
     runs-on: ubuntu-latest
     steps:
@@ -71,3 +72,37 @@ jobs:
         with:
           title: Release ${{ steps.tag.outputs.tag_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  bump-version:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: 'bump-version'
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: '5.x'
+
+      - name: Determine version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.7
+
+      - name: Format version
+        id: formatVersion
+        run: |
+          echo "buildVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}" >> $GITHUB_ENV
+
+      - name: Bump version
+        run: |
+          sed -i "/\"version\":/c\  \"version\": \"${{ steps.formatVersion.outputs.buildVersion }}\"," package.json
+
+      - name: Commit version bump
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'build: bump version to ${{ steps.formatVersion.outputs.buildVersion }} [skip ci]'
+          commit_options: '-a'
+          commit_author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
