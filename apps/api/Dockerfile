@@ -65,8 +65,8 @@ COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/app/node_modules/.pnpm/@prisma+client@5.6.0_prisma@5.6.0 ./node_modules/.pnpm/@prisma+client@5.6.0_prisma@5.6.0
 COPY --from=build /usr/src/app/dist ./dist
 
-# Expose the port that the application listens on.
-EXPOSE 3100
+# Expose the ports that the application listens on.
+EXPOSE 3100 9100
 
 # Run the application.
 CMD ["node", "dist/apps/api/main.js"]

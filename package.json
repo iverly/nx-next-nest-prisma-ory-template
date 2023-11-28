@@ -32,6 +32,7 @@
     "@opentelemetry/context-async-hooks": "^1.18.1",
     "@opentelemetry/core": "^1.18.1",
     "@opentelemetry/exporter-jaeger": "^1.18.1",
+    "@opentelemetry/exporter-prometheus": "^0.45.1",
     "@opentelemetry/instrumentation-fastify": "^0.32.4",
     "@opentelemetry/instrumentation-http": "^0.45.1",
     "@opentelemetry/instrumentation-nestjs-core": "^0.33.3",

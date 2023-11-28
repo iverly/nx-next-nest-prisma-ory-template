@@ -14,10 +14,14 @@ import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
 import { FastifyInstrumentation } from '@opentelemetry/instrumentation-fastify';
 import { PrismaInstrumentation } from '@prisma/instrumentation';
 import { PinoInstrumentation } from '@opentelemetry/instrumentation-pino';
+import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 
 export const otelEnabled = process.env['OTEL_ENABLED'] === 'true';
 
 export const otelSDK = new NodeSDK({
+  metricReader: new PrometheusExporter({
+    port: 9100,
+  }),
   spanProcessor: new BatchSpanProcessor(new JaegerExporter()),
   contextManager: new AsyncLocalStorageContextManager(),
   textMapPropagator: new CompositePropagator({

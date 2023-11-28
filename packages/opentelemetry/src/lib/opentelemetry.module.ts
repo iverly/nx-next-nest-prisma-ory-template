@@ -39,7 +39,16 @@ export class OpenTelemetryModule {
             },
           },
         }),
-        NestOpenTelemetryModule.forRoot(),
+        NestOpenTelemetryModule.forRoot({
+          metrics: {
+            hostMetrics: true,
+            apiMetrics: {
+              enable: true,
+              ignoreRoutes: ['/favicon.ico'],
+              ignoreUndefinedRoutes: true,
+            },
+          },
+        }),
       ],
       exports: [NestOpenTelemetryModule, LoggerModule],
     };
