@@ -94,7 +94,16 @@ services:
 
   # tracing
   jaeger:
+    image: jaegertracing/all-in-one:1.19.2
     container_name: dev-jaeger
+    restart: unless-stopped
+
+  # mailing
+  mailslurper:
+    image: oryd/mailslurper:latest-smtps
+    restart: unless-stopped
+    ports:
+      - 4437:4437 # api port cannot be changed :(
 
   # api-proxy (other services can access the api)
   api:

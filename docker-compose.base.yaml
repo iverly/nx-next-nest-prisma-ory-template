@@ -76,15 +76,3 @@ services:
       - ./scripts/keto/init.sh:/init.sh
     depends_on:
       - keto
-
-  # tracing
-  jaeger:
-    image: jaegertracing/all-in-one:1.19.2
-    restart: unless-stopped
-
-  # mailing
-  mailslurper:
-    image: oryd/mailslurper:latest-smtps
-    restart: unless-stopped
-    ports:
-      - 4437:4437 # api port cannot be changed :(
