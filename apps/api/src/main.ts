@@ -1,3 +1,9 @@
+// Otel must be imported before any other modules
+import {
+  otelEnabled,
+  otelSDK,
+} from '@nx-next-nest-prisma-ory-template/opentelemetry';
+
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
@@ -11,10 +17,6 @@ import {
 } from '@nx-next-nest-prisma-ory-template/error';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ResponseFormatterInterceptor } from '@nx-next-nest-prisma-ory-template/utils';
-import {
-  otelEnabled,
-  otelSDK,
-} from '@nx-next-nest-prisma-ory-template/opentelemetry';
 import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
