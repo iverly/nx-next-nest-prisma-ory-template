@@ -18,6 +18,8 @@ import {
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ResponseFormatterInterceptor } from '@nx-next-nest-prisma-ory-template/utils';
 import { Logger } from 'nestjs-pino';
+import helmet from '@fastify/helmet';
+import csrf from '@fastify/csrf-protection';
 
 async function bootstrap() {
   if (otelEnabled) {
@@ -37,6 +39,11 @@ async function bootstrap() {
   }
 
   const httpAdapter = app.getHttpAdapter();
+
+  // Security plugins
+  app.enableCors();
+  await app.register(helmet);
+  await app.register(csrf);
 
   // Validation pipe
   app.useGlobalPipes(
