@@ -96,7 +96,7 @@ jobs:
       - name: Format version
         id: formatVersion
         run: |
-          echo "buildVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}" >> $GITHUB_ENV
+          echo "buildVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}" >> "$GITHUB_OUTPUT"
 
       - name: Bump version
         run: |
