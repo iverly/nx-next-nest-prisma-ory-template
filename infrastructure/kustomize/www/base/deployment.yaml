@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: www
+spec:
+  selector:
+    matchLabels:
+      run: www
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: www
+    spec:
+      containers:
+      - name: www
+        image: www
+        ports:
+        - containerPort: 3000
