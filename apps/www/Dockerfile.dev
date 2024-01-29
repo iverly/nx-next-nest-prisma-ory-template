@@ -1,0 +1,33 @@
+# syntax=docker/dockerfile:1
+
+ARG NODE_VERSION=18.17.0
+ARG PNPM_VERSION=8.9.2
+
+################################################################################
+# Use node image for base image for all stages.
+FROM node:${NODE_VERSION}-alpine as base
+
+# Set working directory for all build stages.
+WORKDIR /usr/src/app
+
+# Install pnpm.
+RUN --mount=type=cache,target=/root/.npm \
+  npm install -g pnpm@${PNPM_VERSION}
+
+RUN --mount=type=bind,source=package.json,target=package.json \
+  --mount=type=bind,source=pnpm-lock.yaml,target=pnpm-lock.yaml \
+  --mount=type=cache,target=/root/.local/share/pnpm/store \
+  pnpm install --frozen-lockfile
+
+COPY . .
+
+# Generate the Prisma bindings.
+RUN pnpm prisma:generate
+
+FROM base as final
+
+# Expose the ports that the application listens on.
+EXPOSE 4200
+
+# Run the application.
+CMD ["pnpm", "dev:www", "--", "--hostname=0.0.0.0"]
