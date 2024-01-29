@@ -1,0 +1,44 @@
+apiVersion: skaffold/v4beta9
+kind: Config
+metadata:
+  name: nx-next-nest-prisma-ory-template
+build:
+  artifacts:
+    - image: api
+      context: .
+      docker:
+        dockerfile: apps/api/Dockerfile.dev
+      sync:
+        manual:
+          # sync src files since we are running a dev server
+          - src: 'apps/api/*'
+            dest: /usr/src/app
+          - src: 'packages/**/*'
+            dest: /usr/src/app
+
+    - image: www
+      context: .
+      docker:
+        dockerfile: apps/www/Dockerfile.dev
+      sync:
+        manual:
+          # sync src files since we are running a dev server
+          - src: 'apps/www/*'
+            dest: /usr/src/app
+          - src: 'packages/**/*'
+            dest: /usr/src/app
+  local: 
+    useBuildkit: true
+    push: false
+
+deploy:
+  statusCheckDeadlineSeconds: 30
+  tolerateFailuresUntilDeadline: true
+    
+manifests:
+  kustomize:
+    paths:
+      - infrastructure/kustomize/api/local
+      - infrastructure/kustomize/www/local
+    buildArgs:
+      - "--enable-helm"
