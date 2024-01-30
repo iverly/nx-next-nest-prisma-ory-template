@@ -1,0 +1,21 @@
+resources:
+- ../../postgres/base
+- ../base
+- ingress.yaml
+namePrefix: local-
+
+configMapGenerator:
+- name: api-configmap
+  literals:
+  - DATABASE_URL=postgresql://postgres:postgres@local-postgresql:5432/postgres
+
+patches:
+- patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/envFrom"
+      value:
+      - configMapRef:
+          name: local-api-configmap
+  target:
+    kind: Deployment
+    name: api

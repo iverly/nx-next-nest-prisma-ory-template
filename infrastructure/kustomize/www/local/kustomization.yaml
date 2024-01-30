@@ -1,0 +1,21 @@
+resources:
+- ../base
+- ingress.yaml
+namePrefix: local-
+
+patches:
+- patch: |-
+    - op: replace
+      path: "/spec/ports/0/targetPort"
+      value: 4200
+  target:
+    kind: Service
+    name: www
+
+- patch: |-
+    - op: replace
+      path: "/spec/template/spec/containers/0/ports/0/containerPort"
+      value: 4200
+  target:
+    kind: Deployment
+    name: www

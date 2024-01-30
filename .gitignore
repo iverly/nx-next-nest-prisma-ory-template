@@ -189,7 +189,7 @@ Session.vim
 ### windows
 Desktop.ini
 $RECYCLE.BIN/
-Thumbs.db 
+Thumbs.db
 
 ## commonly used temp files and directories
 *.log
@@ -214,3 +214,5 @@ TAGS
 
 # nx
 .nx
+
+infrastructure/kustomize/postgres/base/charts

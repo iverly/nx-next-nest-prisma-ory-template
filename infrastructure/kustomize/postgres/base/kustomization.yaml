@@ -1,0 +1,12 @@
+helmCharts:
+- name: postgresql
+  valuesInline:
+    global:
+      postgresql:
+        auth:
+          postgresPassword: postgres
+          username: postgres
+          password: postgres
+          database: postgres
+  releaseName: postgresql
+  repo: https://charts.bitnami.com/bitnami
